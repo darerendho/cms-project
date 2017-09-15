@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model as Eloquent;
 
-class Post extends Model
+class Model extends Eloquent
 {
     //
     protected $guarded = [];

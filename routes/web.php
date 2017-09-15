@@ -13,13 +13,15 @@
 
 
 
-Route::get('/tasks','TaskController@index');
-Route::get('/tasks/{task}','TaskController@show');
+//Route::get('/tasks','TaskController@index');
+//Route::get('/tasks/{task}','TaskController@show');
 
 
 
 Route::get('/', 'PostsController@index');
+Route::get('/create','PostsController@createpost');
 
+Route::post('/posts','PostsController@store') ;
 //Controller => Use Plural "PostsController"
 //Eloquent model => Use Singular "Post"
 //Migration => create_posts-table
