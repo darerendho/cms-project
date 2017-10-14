@@ -2,30 +2,52 @@
 
 namespace App\Http\Controllers;
 
-use App\Post;
+use App\Post; //to import Post Table
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class PostsController extends Controller
 {
-    public function index(){
+      //Must sign in to create a post
+      public function __construct(){
+        $this->middleware('auth')->except(['index','show']);
+      }
 
-      return view('posts.index');
+    public function index(){
+      $posts = Post::latest()
+      ->month(request(['month','year']))
+      ->get();
+
+      //$archives = Post::archives();
+
+      return view('posts.index',compact('posts'));
     }
 
-    public function createpost(){
+
+    public function create(){
       return view('posts.create');
     }
 
-    public function store(){
 
+    public function store(){
+      //Validate input
+      $this->validate(request(),[
+        'title' => 'required',
+        'body'=> 'required'
+      ]);
         // Create a new using the request data and save to database
-        Post::create([
-            'title'=>request('title'),
-            'body'=>request('body')
-        ]);
+        auth()->user()->publish(
+            new Post(request(['title','body']))
+        );
+
+
+
         //And then redirect to home page.
         return redirect('/');
+    }
 
+    public function show(Post $post){
 
+        return view('posts.show',compact('post'));
     }
 }
