@@ -10,10 +10,12 @@ class PostsController extends Controller
 {
       //Must sign in to create a post
       public function __construct(){
-        $this->middleware('auth')->except(['index','show']);
+        $this->middleware('auth')->except(['index','show']);  //Dont need auth for these views
       }
 
     public function index(){
+
+
       $posts = Post::latest()
       ->month(request(['month','year']))
       ->get();
@@ -40,7 +42,7 @@ class PostsController extends Controller
             new Post(request(['title','body']))
         );
 
-
+        session()->flash('message','Your post has now been published');
 
         //And then redirect to home page.
         return redirect('/');
@@ -49,5 +51,6 @@ class PostsController extends Controller
     public function show(Post $post){
 
         return view('posts.show',compact('post'));
+
     }
 }

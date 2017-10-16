@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User; //To import the table user
+
+use App\Http\Requests\RegistrationForm;
+
 class RegistrationsController extends Controller
 {
     //
@@ -12,24 +14,12 @@ class RegistrationsController extends Controller
             return view('registration.create');
     }
 
-    public function store(){
-        //Validate the registration
-        $this->validate(request(),[
-          'name' => 'required',
-          'email'=> 'required|email',
-          'password'=> 'required|confirmed'
-        ]);
-        //$password = request('password');
-        //$hashpassword = bcrpyt($password);
-        //Create abnd save the User
-        $user = User::create([
-          'name'=>request('name'),
-          'email'=>request('email'),
-          'password'=>bcrypt(request('password'))
-        ]);
-        //Sign the user in
-        auth()->login($user);
-        //redirect
+    public function store(RegistrationForm $form){    //Validation pass to Form Request C
+
+        $form->persist();
+
+        session()->flash('message','Thanks so much for signing up.');
+
 
         return redirect()->home();
     }

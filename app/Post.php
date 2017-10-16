@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
+
 class Post extends Model
 {
 
@@ -22,7 +23,6 @@ class Post extends Model
     public function user(){ //$comment->post -> user
 
         return $this->belongsTo(User::class);
-
     }
 
     public function scopeMonth($query,$filters){
@@ -46,6 +46,15 @@ class Post extends Model
                     ->toArray();
     }
 
+    public function tags()
+    {
+
+      // 1 post may have many tidy_diagnose
+      //Any tag may be applied to many posts
+
+      return $this->belongsToMany(Tag::class);
+
+    }
     protected $guarded = [];
     //$fillable ensures that only the names in the array are place into Database
     //$guarded does not allow those inputs in your array from post request to Database
